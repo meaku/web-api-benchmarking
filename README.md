@@ -1,5 +1,8 @@
 # Web-API Benchmarking
 
+
+- https://www.mnot.net/blog/2011/05/18/http_benchmark_rules
+
 ## Test Setup
 
 ### Measurement Tools 
@@ -24,3 +27,7 @@ But all these tools only work with plain ol HTTP and have no support for WebSock
 Thor fixes all of this.
 
 - https://github.com/observing/thor
+
+
+#### Process logging
+sudo collectl -P -f log ? 
