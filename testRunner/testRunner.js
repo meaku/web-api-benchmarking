@@ -7,38 +7,54 @@ var wrk = require("wrk"),
 var wrkOptions = {
         threads: 10,
         connections: 400,
-        duration: "30s",
+        duration: "10s",
         printLatency: true,
         url: 'http://192.168.50.100:8000/'
     },
     sshHost = "vagrant@192.168.50.100";
 
-function runBenchmark(name, serverCommand, callback) {
+function runBenchmark(id, callback) {
 
-    console.log("running benchmark '" + name + "' (" + serverCommand + ")");
+    console.log("running benchmark '" + id + "'");
 
     var seq = sequest.connect(sshHost);
-    seq(serverCommand, function (err, stdout) {});
 
-    setTimeout(function () {
-        wrk(wrkOptions, function (err, out) {
-            seq.end();
-            callback(err, out);
-        });
-    }, 2000)
+    console.log("starting server benchmark...");
 
+    seq("node /vagrant/testRunner/run.js --id " + id, function (err, pid) {
+        if(err) {
+            console.log(pid);
+            callback(err);
+            return;
+        }
+
+        //give server some time to warm up
+        setTimeout(function () {
+
+            console.log("running benchmark...");
+            wrk(wrkOptions, function (err, out) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+
+                console.log("killing server " + pid);
+
+                seq("kill " + pid, function (err) {
+                    callback(err, out);
+                    seq.end();
+                });
+            });
+
+        }, 1000);
+    });
 }
 
-runBenchmark("node single api", "node /vagrant/node/benchmark/httpServer.js", function (err, results) {
+runBenchmark("node_json", function (err, results) {
+
+    if(err) {
+        throw err;
+    }
+
     console.log(results);
 });
-
-
-/*
- wrk(wrkOptions, function (err, out) {
- console.log(err, out);
- });
- */
-
-//seq.end();
-
