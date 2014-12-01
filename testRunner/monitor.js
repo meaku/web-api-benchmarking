@@ -1,7 +1,7 @@
 "use strict";
 
 var exec = require("child_process").exec,
-    argv = require('minimist')(process.argv.slice(2)),
+    argv = require("minimist")(process.argv.slice(2)),
     usage = require("usage");
 
 var count = 0,
@@ -35,6 +35,7 @@ function measure(pid) {
 
         results.push({
             date: Date.now(),
+            counter: count,
             mem: result.memory,
             cpu: result.cpu
         });

@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter) {
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 			fmt.Fprint(w, "Hello world");
 		});
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(":8000", nil); err != nil {
 		log.Fatal("ListenAndServe: ", err);
 	}
 }

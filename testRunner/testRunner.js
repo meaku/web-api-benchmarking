@@ -27,7 +27,7 @@ function startServer(seq, benchmarkId) {
 
 function runHttpBenchmark(wrkOptions) {
     console.log("running benchmark on " + wrkOptions.url);
-    return nodefn.call(wrk, wrkOptions)
+    return nodefn.call(wrk, wrkOptions);
 }
 
 function killServer(seq, pid) {
@@ -35,18 +35,16 @@ function killServer(seq, pid) {
     return nodefn.call(seq, "kill " + pid);
 }
 
-function runMonitor(seq, pid) {
-    console.log("running monitor on pid " + pid);
+function runMonitor(seq, pid, interval, limit) {
+    console.log("monitoring pid " + pid);
 
-    return nodefn.call(seq, "node /vagrant/testRunner/monitor.js --pid " + pid + " --interval 1000 --limit 10")
+    return nodefn.call(seq, "node /vagrant/testRunner/monitor.js --pid " + pid + " --interval " + interval + " --limit " + limit)
         .then(function (results) {
-            console.log(results);
             return JSON.parse(results[0]);
         });
 }
 
-function runBenchmark(id, callback) {
-
+function testRunner(id, callback) {
     console.log("running benchmark '" + id + "'");
 
     var seq = sequest.connect(sshHost),
@@ -55,7 +53,7 @@ function runBenchmark(id, callback) {
     startServer(seq, id)
         .then(function (pid) {
 
-            var monitor = runMonitor(seq, pid);
+            var monitor = runMonitor(seq, pid, 1000, 20);
 
             setTimeout(function () {
                 when.all([monitor, runHttpBenchmark(wrkOptions)])
@@ -67,16 +65,8 @@ function runBenchmark(id, callback) {
                         seq.end();
                         callback(null, results);
                     }, callback);
-            }, 1000)
+            }, 5000);
         });
 }
 
-
-runBenchmark("node_json", function (err, results) {
-    if (err) {
-        throw err;
-    }
-
-    console.log("wrk", results[0]);
-    console.log("monitor", results[1])
-});
+module.exports = testRunner;
