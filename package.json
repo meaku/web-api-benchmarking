@@ -1,0 +1,38 @@
+{
+  "name": "web-api-benchmarking",
+  "version": "1.0.0",
+  "description": "basic web-api benchmarking toolkit",
+  "main": "index.js",
+  "dependencies": {
+    "go": "^0.0.1",
+    "influx": "^3.1.0",
+    "json2csv": "^2.2.1",
+    "jsoncsv": "^0.1.1",
+    "minimist": "^1.1.0",
+    "pidusage": "^0.1.0",
+    "pm2-usage": "^0.3.9",
+    "sequest": "^0.7.0",
+    "usage": "^0.5.0",
+    "when": "^3.6.3",
+    "wrk": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meaku/web-api-benchmarking.git"
+  },
+  "keywords": [
+    "web",
+    "api",
+    "benchmark"
+  ],
+  "author": "michael.jaser",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meaku/web-api-benchmarking/issues"
+  },
+  "homepage": "https://github.com/meaku/web-api-benchmarking"
+}
