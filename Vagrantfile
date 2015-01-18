@@ -11,10 +11,22 @@ echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | 
 sudo apt-get -y install python-software-properties python g++ make software-properties-common
 
 sudo add-apt-repository -y ppa:git-core/ppa
+
+# Go
 sudo add-apt-repository -y ppa:gophers/go
+
+# Node.js
 sudo add-apt-repository -y ppa:chris-lea/node.js
 
+# PHP
+sudo add-apt-repository ppa:ondrej/php5
+
+# Ruby
+
+
 sudo apt-get update
+
+sudo apt-get install php5 php5-cli
 
 sudo apt-get -y install git
 sudo apt-get -y install apache2-utils
