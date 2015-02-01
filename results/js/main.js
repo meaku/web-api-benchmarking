@@ -14,9 +14,14 @@ $(document).ready(function() {
             width: 400,
             height: 250,
             target: "#memory",
-            x_accessor: "counter",
+            x_accessor: "count",
             y_accessor: "mem",
-            interpolate: "monotone"
+            markers: [
+                { count: 5, label: "Benchmark start"},
+                { count: 15, label: "Benchmark end"}
+            ],
+            interpolate: "basis"
+
         });
         data_graphic({
             title: "CPU usage",
@@ -25,9 +30,13 @@ $(document).ready(function() {
             width: 400,
             height: 250,
             target: "#cpu",
-            x_accessor: "counter",
+            x_accessor: "count",
             y_accessor: "cpu",
-            interpolate: "monotone"
+            markers: [
+                { count: 5, label: "Benchmark start"},
+                { count: 15, label: "Benchmark end"}
+            ],
+            interpolate: "basis"
         });
     });
 }, false);
