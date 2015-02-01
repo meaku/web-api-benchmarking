@@ -5,6 +5,7 @@ var testRunner = require("./testRunner.js"),
     path = require("path"),
     influx = require("influx");
 
+/*
 var client = influx({
     // or single-host configuration
     host: 'localhost',
@@ -13,9 +14,10 @@ var client = influx({
     password: 'benchmark',
     database: 'benchmark'
 });
+*/
 
 
-testRunner("go_json", function (err, results) {
+testRunner("node_non_blocking", function (err, results) {
     if (err) {
         throw err;
     }
@@ -23,6 +25,7 @@ testRunner("go_json", function (err, results) {
     console.log("monitor", JSON.stringify(results[0]));
     console.log("wrk", results[1]);
 
+    /*
     client.writeSeries({
         cpu: results[0].map(function (entry) {
             return {
@@ -33,6 +36,7 @@ testRunner("go_json", function (err, results) {
     }, function (err) {
         console.log("saved?", arguments);
     });
+    */
 
 
     fs.writeFileSync(path.resolve(__dirname, "../results/data/results.json"), JSON.stringify(results[0]));

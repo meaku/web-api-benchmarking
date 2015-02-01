@@ -17,10 +17,12 @@ var count = 0,
 
     poll(function() { return measure(pid); }, interval, function (res) {
 
+        //TODO handle potential calls with res as array in case of many processes
         results.push({
-            cpu: res[0].cpu + res[1].cpu,
-            mem: res[0].mem + res[1].mem,
-            date: res[0].date
+            count: count,
+            cpu: res.cpu,
+            mem: res.mem,
+            date: res.date
         });
 
         return ++count === limit;
@@ -29,7 +31,8 @@ var count = 0,
             //console.log("main res", res, results);
             console.log(JSON.stringify(results));
         }, function (err) {
-            throw err;
+            console.log(err);
+            //throw err;
         });
 
 })();
@@ -77,6 +80,7 @@ function measure(pid) {
 
     var pids = [];
 
+    /*
     return getSubProcesses(pid)
         .then(function (spids) {
 
@@ -87,6 +91,8 @@ function measure(pid) {
                 return measurePid(pid);
             });
         });
+        */
+    return measurePid(pid);
 }
 
 
