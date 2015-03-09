@@ -9,13 +9,14 @@ var wrk = require("wrk"),
 var wrkOptions = {
         threads: 10,
         connections: 400,
-        duration: "10s",
+        duration: "30s",
         printLatency: true,
         url: "http://192.168.50.100:8000/"
     },
     sshHost = "vagrant@vagrant.vm";
 
 function startServer(seq, benchmarkId) {
+    console.log("starting server with '" + benchmarkId + "'");
 
     return nodefn.call(seq, "node /vagrant/testRunner/run.js --id " + benchmarkId)
         .then(function (pid) {
@@ -26,7 +27,7 @@ function startServer(seq, benchmarkId) {
 }
 
 function runHttpBenchmark(wrkOptions) {
-    console.log("running benchmark on " + wrkOptions.url);
+    console.log("running benchmark on " + wrkOptions.url + " for " + wrkOptions.duration);
     return nodefn.call(wrk, wrkOptions);
 }
 
@@ -40,7 +41,6 @@ function runMonitor(seq, pid, interval, limit) {
 
     return nodefn.call(seq, "node /vagrant/testRunner/monitor.js --pid " + pid + " --interval " + interval + " --limit " + limit)
         .then(function (results) {
-            console.log(results);
             return JSON.parse(results[0]);
         });
 }
@@ -55,8 +55,9 @@ function testRunner(id, callback) {
     startServer(seq, id)
         .delay(2000)
         .then(function (pid) {
+            console.log("server started with pid" + pid);
             currentPid = pid;
-            //runHttpBenchmark(wrkOptions).delay(2000)
+            //return runHttpBenchmark(wrkOptions).delay(2000);
             return when.all([runMonitor(seq, pid, 1000, 20), when.resolve().delay(5000).then(function() { return runHttpBenchmark(wrkOptions); }) ]);
         })
         .then(function(res){

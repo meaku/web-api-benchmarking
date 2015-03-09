@@ -16,15 +16,15 @@ $(document).ready(function() {
             target: "#memory",
             x_accessor: "count",
             y_accessor: "mem",
-            xax_count: 20,
+            //xax_count: 20,
             markers: [
                 { count: 5, label: "Benchmark start"},
                 { count: 15, label: "Benchmark end"}
             ],
-            interpolate: "basis",
-            label_x: "Memory"
+            interpolate: "basis"
 
         });
+
         MG.data_graphic({
             title: "CPU usage",
             description: "CPU usage of process (including sub-processes)",
@@ -32,9 +32,11 @@ $(document).ready(function() {
             width: 400,
             height: 250,
             target: "#cpu",
+            yax_units: "%",
+            xax_units: "",
             x_accessor: "count",
             y_accessor: "cpu",
-            xax_count: 20,
+            //xax_count: 20,
             markers: [
                 { count: 5, label: "Benchmark start"},
                 { count: 15, label: "Benchmark end"}

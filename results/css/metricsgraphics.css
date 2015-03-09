@@ -235,12 +235,12 @@
     opacity: 1;
     shape-rendering: crispEdges;
     stroke: #909090;
-    stroke-width: 0.5;
+    stroke-width: 1;
 }
 
 .mg-markers text {
     fill: black;
-    font-size: 0.7rem;
+    font-size: 1.0rem;
     opacity: 0.5;
     stroke: none;
 }

@@ -26,13 +26,13 @@ sudo add-apt-repository ppa:ondrej/php5
 
 sudo apt-get update
 
-sudo apt-get install php5 php5-cli
+#sudo apt-get install php5 php5-cli
 
 sudo apt-get -y install git
 sudo apt-get -y install apache2-utils
 
 sudo apt-get -y install nodejs
-sudo apt-get -y install golang-stable
+#sudo apt-get -y install golang-stable
 
 SCRIPT
 
