@@ -9,13 +9,14 @@ var wrk = require("wrk"),
 var wrkOptions = {
         threads: 10,
         connections: 400,
-        duration: "10s",
+        duration: "30s",
         printLatency: true,
         url: "http://192.168.50.100:8000/"
     },
-    sshHost = "vagrant@192.168.50.100";
+    sshHost = "vagrant@vagrant.vm";
 
 function startServer(seq, benchmarkId) {
+    console.log("starting server with '" + benchmarkId + "'");
 
     return nodefn.call(seq, "node /vagrant/testRunner/run.js --id " + benchmarkId)
         .then(function (pid) {
@@ -26,7 +27,7 @@ function startServer(seq, benchmarkId) {
 }
 
 function runHttpBenchmark(wrkOptions) {
-    console.log("running benchmark on " + wrkOptions.url);
+    console.log("running benchmark on " + wrkOptions.url + " for " + wrkOptions.duration);
     return nodefn.call(wrk, wrkOptions);
 }
 
@@ -48,24 +49,29 @@ function testRunner(id, callback) {
     console.log("running benchmark '" + id + "'");
 
     var seq = sequest.connect(sshHost),
-        results;
+        results,
+        currentPid;
 
     startServer(seq, id)
+        .delay(2000)
         .then(function (pid) {
-
-            var monitor = runMonitor(seq, pid, 1000, 20);
-
-            setTimeout(function () {
-                when.all([monitor, runHttpBenchmark(wrkOptions)])
-                    .then(function (res) {
-                        results = res;
-                        return killServer(seq, pid);
-                    })
-                    .done(function () {
-                        seq.end();
-                        callback(null, results);
-                    }, callback);
-            }, 5000);
+            console.log("server started with pid" + pid);
+            currentPid = pid;
+            //return runHttpBenchmark(wrkOptions).delay(2000);
+            return when.all([runMonitor(seq, pid, 1000, 20), when.resolve().delay(5000).then(function() { return runHttpBenchmark(wrkOptions); }) ]);
+        })
+        .then(function(res){
+            results = res;
+            return killServer(seq, currentPid);
+        })
+        .done(function() {
+            seq.end();
+            callback(null, results);
+        }, function(err) {
+            console.log("killing server due to error:" + err.message, err.stack);
+            killServer(seq, currentPid).done(function() {
+                callback(err);
+            }, callback);
         });
 }
 
