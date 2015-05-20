@@ -23,6 +23,14 @@ var tests = {
         cmd: "node",
         args: ["/vagrant/node/blocking-non-blocking/blockingServer.js"]
     },
+    "node_callback": {
+        cmd: "node",
+        args: ["/vagrant/node/flowControl/callbackServer.js"]
+    },
+    "node_promise": {
+        cmd: "node",
+        args: ["/vagrant/node/flowControl/promiseServer.js"]
+    },
     "node_non_blocking": {
         cmd: "node",
         args: ["/vagrant/node/blocking-non-blocking/nonBlockingServer.js"]
