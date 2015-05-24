@@ -31,6 +31,10 @@ var tests = {
         cmd: "node",
         args: ["/vagrant/node/flowControl/promiseServer.js"]
     },
+    "node_generator": {
+        cmd: "node",
+        args: ["/vagrant/node/flowControl/generatorServer.js"]
+    },
     "node_non_blocking": {
         cmd: "node",
         args: ["/vagrant/node/blocking-non-blocking/nonBlockingServer.js"]
